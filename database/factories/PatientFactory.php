@@ -27,7 +27,6 @@ class PatientFactory extends Factory
             'taille' => fake()->randomDigit($min = 50, $max = 100),
             'groupe_sanguin' => fake()->word(),
             'antecedants_medicaux' => fake()->text(),
-           
         ];
     }
 }

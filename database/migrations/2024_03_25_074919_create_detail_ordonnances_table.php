@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('detail_ordonnances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ordonnance_id');
+            $table->foreign('ordonnance_id')->references('id')->on('ordonnances');
+            $table->unsignedBigInteger('medicament_id');
+            $table->foreign('medicament_id')->references('id')->on('medicaments');
+            $table->string('dosage');
             $table->timestamps();
         });
     }

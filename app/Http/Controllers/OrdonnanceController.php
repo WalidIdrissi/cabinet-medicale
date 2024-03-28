@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ordonnance;
+use App\Http\Controllers\Controller;
+use App\Models\Traitement;
 use Illuminate\Http\Request;
 
 class OrdonnanceController extends Controller
@@ -12,7 +14,8 @@ class OrdonnanceController extends Controller
      */
     public function index()
     {
-        //
+        $ordonnances = Ordonnance::all();
+        return view('ordonnance.index', compact('ordonnances'));
     }
 
     /**
@@ -20,7 +23,8 @@ class OrdonnanceController extends Controller
      */
     public function create()
     {
-        //
+        $traitements = Traitement::all();
+        return view('ordonnance.create', compact('traitements'));
     }
 
     /**
@@ -28,7 +32,12 @@ class OrdonnanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'traitement_id' => 'required|string|max:255',
+        ]);
+        Ordonnance::create($request->all());
+        return redirect()->route('ordonnance.index')->with('success', 'Le ordonnance a été créé avec succès.');
     }
 
     /**
@@ -36,7 +45,7 @@ class OrdonnanceController extends Controller
      */
     public function show(Ordonnance $ordonnance)
     {
-        //
+        return view('ordonnance.show', compact('ordonnance'));
     }
 
     /**
@@ -44,7 +53,8 @@ class OrdonnanceController extends Controller
      */
     public function edit(Ordonnance $ordonnance)
     {
-        //
+        $traitements = Traitement::all();
+        return view('ordonnance.edit', compact('ordonnance', 'traitements'));
     }
 
     /**
@@ -52,7 +62,15 @@ class OrdonnanceController extends Controller
      */
     public function update(Request $request, Ordonnance $ordonnance)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'traitement_id' => 'required|string|max:255',
+        ]);
+        $ordonnance->update([
+            'date' => $request->input('date'),
+            'traitement_id' => $request->input('traitement_id'),
+        ]);
+        return redirect()->route('ordonnance.index')->with('success', 'Le ordonnance a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +78,7 @@ class OrdonnanceController extends Controller
      */
     public function destroy(Ordonnance $ordonnance)
     {
-        //
+        $ordonnance->delete();
+        return redirect()->route('ordonnance.index')->with('success', 'Le ordonnance a été supprimé avec succès.');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type_traitement;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class TypeTraitementController extends Controller
@@ -12,7 +13,8 @@ class TypeTraitementController extends Controller
      */
     public function index()
     {
-        //
+        $type_traitements = Type_traitement::all();
+        return view('type_traitement.index', compact('type_traitements'));
     }
 
     /**
@@ -20,7 +22,7 @@ class TypeTraitementController extends Controller
      */
     public function create()
     {
-        //
+        return view('type_traitement.create');
     }
 
     /**
@@ -28,7 +30,11 @@ class TypeTraitementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type_traitement' => 'required|string|max:255',
+        ]);
+        Type_traitement::create($request->all());
+        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été créé avec succès.');
     }
 
     /**
@@ -36,7 +42,7 @@ class TypeTraitementController extends Controller
      */
     public function show(Type_traitement $type_traitement)
     {
-        //
+        return view('type_traitement.show', compact('type_traitement'));
     }
 
     /**
@@ -44,7 +50,7 @@ class TypeTraitementController extends Controller
      */
     public function edit(Type_traitement $type_traitement)
     {
-        //
+        return view('type_traitement.edit', compact('type_traitement'));
     }
 
     /**
@@ -52,7 +58,14 @@ class TypeTraitementController extends Controller
      */
     public function update(Request $request, Type_traitement $type_traitement)
     {
-        //
+        $request->validate([
+            'type_traitement' => 'required|string|max:255',
+        ]);
+        $type_traitement->update([
+            'type_traitement' => $request->input('type_traitement'),
+
+        ]);
+        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +73,7 @@ class TypeTraitementController extends Controller
      */
     public function destroy(Type_traitement $type_traitement)
     {
-        //
+        $type_traitement->delete();
+        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été supprimé avec succès.');
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Analyse;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Traitement;
 
 class AnalyseController extends Controller
 {
@@ -12,7 +14,8 @@ class AnalyseController extends Controller
      */
     public function index()
     {
-        //
+        $analyses = Analyse::all();
+        return view('analyse.index', compact('analyses'));
     }
 
     /**
@@ -20,7 +23,8 @@ class AnalyseController extends Controller
      */
     public function create()
     {
-        //
+        $traitements = Traitement::all();
+        return view('analyse.create', compact('traitements'));
     }
 
     /**
@@ -28,7 +32,12 @@ class AnalyseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'traitement_id' => 'required|string|max:255',
+        ]);
+        Analyse::create($request->all());
+        return redirect()->route('analyse.index')->with('success', 'Le analyse a été créé avec succès.');
     }
 
     /**
@@ -36,7 +45,7 @@ class AnalyseController extends Controller
      */
     public function show(Analyse $analyse)
     {
-        //
+        return view('analyse.show', compact('analyse'));
     }
 
     /**
@@ -44,7 +53,8 @@ class AnalyseController extends Controller
      */
     public function edit(Analyse $analyse)
     {
-        //
+        $traitements = Traitement::all();
+        return view('analyse.edit', compact('analyse', 'traitements'));
     }
 
     /**
@@ -52,7 +62,15 @@ class AnalyseController extends Controller
      */
     public function update(Request $request, Analyse $analyse)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'traitement_id' => 'required|string|max:255',
+        ]);
+        $analyse->update([
+            'date' => $request->input('date'),
+            'traitement_id' => $request->input('traitement_id'),
+        ]);
+        return redirect()->route('analyse.index')->with('success', 'Le analyse a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +78,7 @@ class AnalyseController extends Controller
      */
     public function destroy(Analyse $analyse)
     {
-        //
+        $analyse->delete();
+        return redirect()->route('analyse.index')->with('success', 'Le analyse a été supprimé avec succès.');
     }
 }

@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail__analyses', function (Blueprint $table) {
+        Schema::create('detail_analyses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('analyse_id');
+            $table->foreign('analyse_id')->references('id')->on('analyses');
+            $table->unsignedBigInteger('type_analyse_id');
+            $table->foreign('type_analyse_id')->references('id')->on('type_analyses');
+            $table->string('valeur');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail__analyses');
+        Schema::dropIfExists('detail_analyses');
     }
 };

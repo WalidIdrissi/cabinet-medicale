@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabinet;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CabinetController extends Controller
@@ -12,7 +13,8 @@ class CabinetController extends Controller
      */
     public function index()
     {
-        //
+        $cabinets = Cabinet::all();
+        return view('cabinet.index', compact('cabinets'));
     }
 
     /**
@@ -20,7 +22,7 @@ class CabinetController extends Controller
      */
     public function create()
     {
-        //
+        return view('cabinet.create');
     }
 
     /**
@@ -28,7 +30,14 @@ class CabinetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'adresse' => 'required|string|max:255',
+            'telephone' => 'required|string|max:255',
+            'nom_cabinet' => 'required|string|max:255',
+            'nom_docteur' => 'required|string|max:255',
+        ]);
+        Cabinet::create($request->all());
+        return redirect()->route('cabinet.index')->with('success', 'Le cabinet a été créé avec succès.');
     }
 
     /**
@@ -36,7 +45,7 @@ class CabinetController extends Controller
      */
     public function show(Cabinet $cabinet)
     {
-        //
+        return view('cabinet.show', compact('cabinet'));
     }
 
     /**
@@ -44,7 +53,7 @@ class CabinetController extends Controller
      */
     public function edit(Cabinet $cabinet)
     {
-        //
+        return view('cabinet.edit', compact('cabinet'));
     }
 
     /**
@@ -52,7 +61,19 @@ class CabinetController extends Controller
      */
     public function update(Request $request, Cabinet $cabinet)
     {
-        //
+        $request->validate([
+            'adresse' => 'required|string|max:255',
+            'telephone' => 'required|string|max:255',
+            'nom_cabinet' => 'required|string|max:255',
+            'nom_docteur' => 'required|string|max:255',
+        ]);
+        $cabinet->update([
+            'adresse' => $request->input('adresse'),
+            'telephone' => $request->input('telephone'),
+            'nom_cabinet' => $request->input('nom_cabinet'),
+            'nom_docteur' => $request->input('nom_docteur'),
+        ]);
+        return redirect()->route('cabinet.index')->with('success', 'Le cabinet a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +81,7 @@ class CabinetController extends Controller
      */
     public function destroy(Cabinet $cabinet)
     {
-        //
+        $cabinet->delete();
+        return redirect()->route('cabinet.index')->with('success', 'Le cabinet a été supprimé avec succès.');
     }
 }

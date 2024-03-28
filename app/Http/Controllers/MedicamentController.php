@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicament;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MedicamentController extends Controller
@@ -12,7 +13,8 @@ class MedicamentController extends Controller
      */
     public function index()
     {
-        //
+        $medicaments = Medicament::all();
+        return view('medicament.index', compact('medicaments'));
     }
 
     /**
@@ -20,7 +22,7 @@ class MedicamentController extends Controller
      */
     public function create()
     {
-        //
+        return view('medicament.create');
     }
 
     /**
@@ -28,7 +30,11 @@ class MedicamentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'medicament' => 'required|string|max:255',
+        ]);
+        Medicament::create($request->all());
+        return redirect()->route('medicament.index')->with('success', 'Le medicament a été créé avec succès.');
     }
 
     /**
@@ -36,7 +42,7 @@ class MedicamentController extends Controller
      */
     public function show(Medicament $medicament)
     {
-        //
+        return view('medicament.show', compact('medicament'));
     }
 
     /**
@@ -44,7 +50,8 @@ class MedicamentController extends Controller
      */
     public function edit(Medicament $medicament)
     {
-        //
+        return view('medicament.edit', compact('medicament'));
+
     }
 
     /**
@@ -52,7 +59,13 @@ class MedicamentController extends Controller
      */
     public function update(Request $request, Medicament $medicament)
     {
-        //
+        $request->validate([
+            'medicament' => 'required|string|max:255',
+        ]);
+        $medicament->update([
+            'medicament' => $request->input('medicament'),
+        ]);
+        return redirect()->route('medicament.index')->with('success', 'Le medicament a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +73,7 @@ class MedicamentController extends Controller
      */
     public function destroy(Medicament $medicament)
     {
-        //
+        $medicament->delete();
+        return redirect()->route('medicament.index')->with('success', 'Le medicament a été supprimé avec succès.');
     }
 }

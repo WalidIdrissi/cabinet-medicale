@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('ordonnances', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->unsignedBigInteger('traitement_id');
+            $table->foreign('traitement_id')->references('id')->on('traitements');
             $table->timestamps();
         });
     }

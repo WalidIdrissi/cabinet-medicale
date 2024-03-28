@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Type_analyse extends Model
 {
     use HasFactory;
+    protected $fillable = ['type_analyse'];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type_analyse;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class TypeAnalyseController extends Controller
@@ -12,7 +13,8 @@ class TypeAnalyseController extends Controller
      */
     public function index()
     {
-        //
+        $type_analyses = Type_analyse::all();
+        return view('type_analyse.index', compact('type_analyses'));
     }
 
     /**
@@ -20,7 +22,7 @@ class TypeAnalyseController extends Controller
      */
     public function create()
     {
-        //
+        return view('type_analyse.create');
     }
 
     /**
@@ -28,7 +30,11 @@ class TypeAnalyseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type_analyse' => 'required|string|max:255',
+        ]);
+        Type_analyse::create($request->all());
+        return redirect()->route('type_analyse.index')->with('success', 'Le type_analyse a été créé avec succès.');
     }
 
     /**
@@ -36,7 +42,7 @@ class TypeAnalyseController extends Controller
      */
     public function show(Type_analyse $type_analyse)
     {
-        //
+        return view('type_analyse.show', compact('type_analyse'));
     }
 
     /**
@@ -44,7 +50,7 @@ class TypeAnalyseController extends Controller
      */
     public function edit(Type_analyse $type_analyse)
     {
-        //
+        return view('type_analyse.edit', compact('type_analyse'));
     }
 
     /**
@@ -52,7 +58,13 @@ class TypeAnalyseController extends Controller
      */
     public function update(Request $request, Type_analyse $type_analyse)
     {
-        //
+        $request->validate([
+            'type_analyse' => 'required|string|max:255',
+        ]);
+        $type_analyse->update([
+            'type_analyse' => $request->input('type_analyse'),
+        ]);
+        return redirect()->route('type_analyse.index')->with('success', 'Le type_analyse a été modifié avec succès.');
     }
 
     /**
@@ -60,6 +72,7 @@ class TypeAnalyseController extends Controller
      */
     public function destroy(Type_analyse $type_analyse)
     {
-        //
+        $type_analyse->delete();
+        return redirect()->route('type_analyse.index')->with('success', 'Le type_analyse a été supprimé avec succès.');
     }
 }
