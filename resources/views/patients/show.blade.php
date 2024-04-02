@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title')
-Ajouter un nouveau patient| Cabinet Medicale App
+Afficher le patient| Cabinet Medicale App
 @endsection
 
 
@@ -20,97 +20,93 @@ Ajouter un nouveau patient| Cabinet Medicale App
                                 <div class='card-header'>
                         
                                     <div class="text-center font-weight-bold text-uppercase">
-                                        <h4>Ajouter un nouveau patient </h4>
+                                        <h3>{{$patient->nom}} </h3>
                     
                                     </div>
                                 </div>   
+                                {{-- <div class="text-center font-weight-bold text-uppercase">
+                                    <a href="" class="btn btn-outline-w"> imprimer les informations du patient </a>
+
+                
+                                </div>
+                                <hr> --}}
                                 <div class="card-body">
-                                    <form action="{{route('patients.store')}}" 
-                                            method="POST" class="mt-3" >
-                                            @csrf
+                                    
                                             <div class="form-group mb-3">
                                                 <label for="id">ID</label>
-                                                <input type="number" class="form-control" 
+                                                <input type="number"  disabled class="form-control rounded-0" 
                                                 name="id"
                                                  
                                                  placeholder="id"
-                                                value="{{old('id')}}">
+                                                value="{{$patient->id}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="nom">NOM</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="nom" placeholder="nom"
-                                                value="{{old('nom')}}">
+                                                value="{{$patient->nom}}">
 
                                              </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="prenom">PRENOM</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="prenom" placeholder="prenom"
-                                                value="{{old('prenom')}}">
+                                                value="{{$patient->prenom}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="date_naissance">Date De Naissance</label>
-                                                <input type="date" class="form-control" 
+                                                <input type="date"  disabled class="form-control rounded-0" 
                                                 name="date_naissance" placeholder="date_naissance"
-                                                value="{{old('date_naissance')}}">
+                                                value="{{$patient->date}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="telephone">TELEPHONE</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="telephone" 
                                                 placeholder="telephone"
-                                                value="{{old('telephone')}}">
+                                                value="{{$patient->telephone}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="poids">POIDS</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="poids" placeholder="poids"
-                                                value="{{old('poids')}}">
+                                                value="{{$patient->poids}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="taille">TAILLE</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="taille" placeholder="taille"
-                                                value="{{old('taille')}}">
+                                                value="{{$patient->taille}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="groupe_sanguin">Groupe Sanguin</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="groupe_sanguin" placeholder="groupe_sanguin"
-                                                value="{{old('groupe_sanguin')}}">
+                                                value="{{$patient->groupe_sanguin}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="antecedants_medicaux"> Les Antecedants Medicaux</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="antecedants_medicaux" placeholder="antecedants_medicaux"
-                                                value="{{old('antecedants_medicaux')}}">
+                                                value="{{$patient->antecedants_medicaux}}">
 
                                             </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary">
-                                                   submit
-                                               </button>
-                                         
-                                            </div>
-
-                                   
-                                    </form>
+                  
                             
                     </div>
                 </div>

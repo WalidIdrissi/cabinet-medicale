@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title')
-Modifier rendez-vous| Cabinet Medicale App
+Afficher le traitement| Cabinet Medicale App
 @endsection
 
 
@@ -20,30 +20,26 @@ Modifier rendez-vous| Cabinet Medicale App
                                 <div class='card-header'>
                         
                                     <div class="text-center font-weight-bold text-uppercase">
-                                        <h4>Modifier rendez-vous </h4>
+                                        <h4>{{$traitement->id}}</h4>
                     
                                     </div>
                                 </div>   
                                 <div class="card-body">
-                                    <form action="{{ route('rendez_vous_medicales.update', ['rendez_vous_medicale' => $rendez_vous_medicale->id]) }}" 
-
-                                            method="POST" class="mt-3" >
-                                            @csrf
-                                            @method('PUT')
+                                    
                                             <div class="form-group mb-3">
                                                 <label for="id">ID</label>
-                                                <input type="number" class="form-control" 
+                                                <input type="number" disabled  class="form-control" 
                                                 name="id"
                                                  
                                                  placeholder="id"
-                                                value="{{old('id',$rendez_vous_medicale->id)}}">
+                                                value="{{$traitement->id}}">
 
                                             </div>
                                             
 
                                             <div class="form-group mb-3">
                                                 <label for="patient_id">Patient</label>
-                                                <select class="form-control" name="patient_id">
+                                                <select  class="form-control" disabled name="patient_id">
                                                     @foreach($patients as $patient)
                                                         <option value="{{ $patient->id }}">{{ $patient->id }} </option>
                                                     @endforeach
@@ -53,49 +49,42 @@ Modifier rendez-vous| Cabinet Medicale App
 
                                             <div class="form-group mb-3">
                                                 <label for="date">Date</label>
-                                                <input type="date" class="form-control" 
+                                                <input type="date"  disabled class="form-control" 
                                                 name="date" placeholder="date"
-                                                value="{{old('date',$rendez_vous_medicale->date)}}">
+                                                value="{{$traitement->date}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
-                                                <label for="heure">Heure</label>
-                                                <input type="time" class="form-control" 
-                                                name="heure" placeholder="heure"
-                                                value="{{old('heure',$rendez_vous_medicale->heure)}}">
-
+                                                <label for="type_traitement_id">type_traitement</label>
+                                                <select  class="form-control" disabled name="type_traitement_id">
+                                                    @foreach($type_traitements as $type_traitement)
+                                                        <option value="{{ $type_traitement->id }}">{{ $type_traitement->id }} </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
                                             <div class="form-group mb-3">
-                                                <label for="type">Type</label>
-                                                <input type="text" class="form-control" 
-                                                name="type" 
-                                                placeholder="type"
-                                                value="{{old('type',$rendez_vous_medicale->type)}}">
+                                                <label for="statut_paiement">statut_paiement</label>
+                                                <input type="text" disabled class="form-control" 
+                                                name="statut_paiement" 
+                                                placeholder="statut_paiement"
+                                                value="{{$traitement->statut_paiement}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="statut">Statut</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control" 
                                                 name="statut" placeholder="statut"
-                                                value="{{old('statut',$rendez_vous_medicale->statut)}}">
+                                                value="{{$traitement->statut}}">
 
                                             </div>
 
                                             
 
                                             </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary">
-                                                   submit
-                                               </button>
-                                         
-                                            </div>
-
-                                   
-                                    </form>
+                                            
                             
                     </div>
                 </div>

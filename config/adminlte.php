@@ -320,63 +320,92 @@ return [
                     'url' => 'admin/patients/create',
                     'icon' => 'fas fa-fw fa-user-plus',
                 ],
+        ],
+],
 
+
+
+
+        [
+            'text' => 'Rendez_vous',
+            'icon' => 'fas fa-fw fa-arrow-alt-circle-right',
+            'submenu' => [
                 [
-                    'text' => 'Liste des Rendes-vous',
+                    'text' => 'Liste des rendez_vous',
                     'url' => 'admin/rendez_vous_medicales',
-                    'icon' => 'fas fa-fw fa-list',
+                    'icon' => 'fas fa-fw fa-list'
                 ],
-               
+            
                 [
                     'text' => 'create',
                     'url' => 'admin/rendez_vous_medicales/create',
-                    'icon' => 'fas fa-fw fa-user-plus',
+                    'icon' => 'fas fa-fw fa-user-plus'
                 ],
+            
+        ],
 
+
+
+
+  
+
+],
+
+
+        [
+            'text' => 'Type_traitement',
+            'icon' => 'fas fa-fw fa-arrow-alt-circle-right',
+            'submenu' => [
+                [
+                    'text' => 'Liste des Type_traitement',
+                    'url' => 'admin/type_traitements',
+                    'icon' => 'fas fa-fw fa-list'
+                ],
+            
+                [
+                    'text' => 'create',
+                    'url' => 'admin/type_traitements/create',
+                    'icon' => 'fas fa-fw fa-user-plus'
+                ],
+            
+        ],
+
+
+
+
+   ],
+
+
+        [
+            'text' => 'Traitement',
+            'icon' => 'fas fa-fw fa-arrow-alt-circle-right',
+            'submenu' => [
                 [
                     'text' => 'Liste des Traitements',
                     'url' => 'admin/traitements',
-                    'icon' => 'fas fa-fw fa-list',
+                    'icon' => 'fas fa-fw fa-list'
                 ],
-               
+            
                 [
                     'text' => 'create',
                     'url' => 'admin/traitements/create',
-                    'icon' => 'fas fa-fw fa-user-plus',
+                    'icon' => 'fas fa-fw fa-user-plus'
                 ],
-
-                [
-                    'text' => 'Liste des Ordonnaces',
-                    'url' => 'admin/ordonnaces',
-                    'icon' => 'fas fa-fw fa-list',
-                ],
-               
-                [
-                    'text' => 'create',
-                    'url' => 'admin/ordonnaces/create',
-                    'icon' => 'fas fa-fw fa-user-plus',
-                ],
-
-                [
-                    'text' => 'Liste des Medicaments',
-                    'url' => 'admin/medicaments',
-                    'icon' => 'fas fa-fw fa-list',
-                ],
-               
-                [
-                    'text' => 'create',
-                    'url' => 'admin/medicaments/create',
-                    'icon' => 'fas fa-fw fa-user-plus',
-                ],
-                
-
-
-
-
-            ],
+            
         ],
+
+
+
+
+  
+
+],
+
+],
+
        
-    ],
+       
+
 
     /*
     |--------------------------------------------------------------------------

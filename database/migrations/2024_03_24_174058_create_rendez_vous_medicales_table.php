@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('rendez_vous_medicales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('patient_id');
-            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreignId('patient_id')->constrained();
+            
             $table->date('date');
-            $table->dateTime('heure');
+
+            $table->time('heure');
             $table->string('type');
             $table->string('statut');
             $table->timestamps();
+          
         });
     }
 

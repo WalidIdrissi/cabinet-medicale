@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Traitement;
-use App\Http\Controllers\Controller;
-use App\Models\Rendez_vous_medicale;
+use App\Models\Patient;
 use App\Models\Type_traitement;
+use App\Models\Traitement;
 use Illuminate\Http\Request;
 
 class TraitementController extends Controller
@@ -15,18 +13,21 @@ class TraitementController extends Controller
      */
     public function index()
     {
-        $traitements = Traitement::all();
-        return view('traitement.index', compact('traitements'));
+        $traitements=Traitement::all();
+        return view('traitements.index')->with([
+          'traitements'=>$traitements
+  
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $Rendez_vous_medicales = Rendez_vous_medicale::all();
+    { 
+        $patients = Patient::all(); // Récupère tous les patients depuis la base de données
         $type_traitements = Type_traitement::all();
-        return view('traitement.create', compact('Rendez_vous_medicales', 'type_traitements'));
+        return view('traitements.create', compact('patients','type_traitements'));
     }
 
     /**
@@ -34,60 +35,87 @@ class TraitementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'Rendez_vous_medicale_id' => 'required|string|max:255',
-            'date' => 'required|date',
-            'type_traitement_id' => 'required|string|max:255',
-            'statut_paiement' => 'required|string|max:255',
-        ]);
-        Traitement::create($request->all());
-        return redirect()->route('traitement.index')->with('success','Le traitement a été créé avec succès.');
+        $this->validate($request,[
+
+            'id'=>'required|unique:traitements,id',
+            'patient_id'=>'required',
+            'date'=>'required |date',
+            'type_traitement_id'=>'required',
+            'statut_paiement'=>'required',
+            
+            
+       ]);
+       Traitement::create($request->except('_token'));
+       return redirect()->route('traitements.index')->with([
+        'success'=>'traitement ajouté'
+       ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Traitement $traitement)
+    public function show( $id)
     {
-        return view('traitement.show', compact('traitement'));
+        $traitement = Traitement::findOrFail($id);
+        $patients = Patient::all();
+        $type_traitements = Type_traitement::all();
+         // Récupérer tous les patients pour la liste déroulante
+        return view('traitements.show')->with([
+            'traitement' => $traitement,
+            'patients' => $patients,
+            'type_traitements' => $type_traitements,
+    ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Traitement $traitement)
+    public function edit( $id)
     {
-        $Rendez_vous_medicales = Rendez_vous_medicale::all();
+        $traitement = Traitement::findOrFail($id);
+        $patients = Patient::all(); 
         $type_traitements = Type_traitement::all();
-        return view('traitement.edit', compact('traitement', 'Rendez_vous_medicales', 'type_traitements'));
+        // Récupérer tous les patients pour la liste déroulante
+        return view('traitements.edit')->with([
+            'traitement ' => $traitement ,
+            'patients' => $patients,
+
+         'type_traitements' => $type_traitements,
+    
+    ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Traitement $traitement)
+    public function update(Request $request,  $id)
     {
-        $request->validate([
-            'Rendez_vous_medicale_id' => 'required|string|max:255',
-            'date' => 'required|date',
-            'type_traitement_id' => 'required|string|max:255',
-            'statut_paiement' => 'required|string|max:255',
-        ]);
-        $traitement->update([
-            'Rendez_vous_medicale_id' => $request->input('Rendez_vous_medicale_id'),
-            'date' => $request->input('date'),
-            'type_traitement_id' => $request->input('type_traitement_id'),
-            'statut_paiement' => $request->input('statut_paiement'),
-        ]);
-        return redirect()->route('traitement.index')->with('success', 'Le traitement a été modifié avec succès.');
+        
+        $traitement=Traitement::where('id',$id)->first();
+        $this->validate($request,[
+            'id'=>'required|unique:traitements,id',
+            'patient_id'=>'required',
+            'date'=>'required |date',
+            'type_traitement_id'=>'required',
+            'statut_paiement'=>'required',
+            
+       ]);
+       $traitement->update($request->except('_token','_method'));
+       return redirect()->route('traitements.index')->with([
+        'success'=>'traitement modifié '
+       ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Traitement $traitement)
+    public function destroy( $id)
     {
+        
+        $traitement=Traitement::where('id',$id)->first();
         $traitement->delete();
-        return redirect()->route('traitement.index')->with('success', 'Le traitement a été supprimé avec succès.');
+        return redirect()->route('traitements.index')->with([
+            'success'=>'traitement supprimé'
+        ]);
     }
 }

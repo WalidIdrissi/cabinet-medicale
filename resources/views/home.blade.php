@@ -24,17 +24,48 @@ Home| Cabinet Medicale App
 
                             </div>
                             <a href="{{url('admin/patients')}}" class="small-box-footer" >
-                            More info <i class="fas fa-arrow-circle-right"></i>
+                           pour  plus d'informations <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>
+
+                  
+
+                </div>
+            
+                <div class="col-md-4">
+                     <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{App\Models\rendez_vous_medicale::count()}}</h3>
+                            <p> Rendez_vous<p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+
+                        </div>
+                        <a href="{{url('admin/rendez_vous_medicales')}}" class="small-box-footer" >
+                        pour  plus d'informations <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                      </div>
                 </div>
 
-             </div>
+
+                 <div class="col-md-4">
+                     <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{App\Models\traitement::count()}}</h3>
+                            <p> Traitement<p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+
+                        </div>
+                        <a href="{{url('admin/traitements')}}" class="small-box-footer" >
+                        pour  plus d'informations <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                      </div>
+                </div>
+    </div>   
         
-        
-        
-        
-        
-        </div>
+</div>
         
 @endsection

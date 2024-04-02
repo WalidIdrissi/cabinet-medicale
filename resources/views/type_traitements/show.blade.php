@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('title')
-modifier le type_traitement| Cabinet Medicale App
+Afficher le type_traitement| Cabinet Medicale App
 @endsection
 
 
@@ -20,44 +20,40 @@ modifier le type_traitement| Cabinet Medicale App
                                 <div class='card-header'>
                         
                                     <div class="text-center font-weight-bold text-uppercase">
-                                        <h4>modifier  le type_traitement </h4>
+                                        <h3>{{$type_traitement->type_traitement}} </h3>
                     
                                     </div>
                                 </div>   
+                                {{-- <div class="text-center font-weight-bold text-uppercase">
+                                    <a href="" class="btn btn-outline-w"> imprimer les informations du patient </a>
+
+                
+                                </div>
+                                <hr> --}}
                                 <div class="card-body">
-                                    <form action="{{route('type_traitements.update',$type_traitement->id)}}" 
-                                            method="POST" class="mt-3" >
-                                            @csrf
-                                            @method('PUT')
+                                    
                                             <div class="form-group mb-3">
                                                 <label for="id">ID</label>
-                                                <input type="number" class="form-control" 
-                                                name="id" placeholder="id"
-                                                value="{{old('id',$type_traitement->id)}}">
+                                                <input type="number"  disabled class="form-control rounded-0" 
+                                                name="id"
+                                                 
+                                                 placeholder="id"
+                                                value="{{$type_traitement->id}}">
 
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="type_traitement">Type_traitement</label>
-                                                <input type="text" class="form-control" 
+                                                <input type="text" disabled class="form-control rounded-0" 
                                                 name="type_traitement" placeholder="type_traitement"
-                                                value="{{old('type_traitement',$type_traitement->type_traitement)}}">
+                                                value="{{$type_traitement->type_traitement}}">
 
                                              </div>
 
                                            
 
                                            
-
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary">
-                                                   submit
-                                               </button>
-                                         
-                                            </div>
-
-                                   
-                                    </form>
+                  
                             
                     </div>
                 </div>

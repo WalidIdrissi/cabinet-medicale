@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Type_traitement;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class TypeTraitementController extends Controller
@@ -13,8 +12,11 @@ class TypeTraitementController extends Controller
      */
     public function index()
     {
-        $type_traitements = Type_traitement::all();
-        return view('type_traitement.index', compact('type_traitements'));
+        $type_traitements=Type_traitement::all();
+        return view('type_traitements.index')->with([
+        'type_traitements'=>$type_traitements
+
+      ]);
     }
 
     /**
@@ -22,7 +24,7 @@ class TypeTraitementController extends Controller
      */
     public function create()
     {
-        return view('type_traitement.create');
+        return view('type_traitements.create');
     }
 
     /**
@@ -30,50 +32,67 @@ class TypeTraitementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'type_traitement' => 'required|string|max:255',
-        ]);
-        Type_traitement::create($request->all());
-        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été créé avec succès.');
+        $this->validate($request,[
+
+            'id'=>'required|unique:type_traitements,id',
+            'type_traitement'=>'required|string|max:255',
+           
+       ]);
+       Type_traitement::create($request->except('_token'));
+       return redirect()->route('type_traitements.index')->with([
+        'success'=>'Type_traitement ajouté'
+       ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Type_traitement $type_traitement)
+    public function show( $id)
     {
-        return view('type_traitement.show', compact('type_traitement'));
+        $type_traitement=Type_traitement::where('id',$id)->first();
+      return view('type_traitements.show')->with([
+          'type_traitement'=>$type_traitement
+  
+  ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Type_traitement $type_traitement)
+    public function edit( $id)
     {
-        return view('type_traitement.edit', compact('type_traitement'));
+        $type_traitement=Type_traitement::where('id',$id)->first();
+        return view('type_traitements.edit')->with([
+            'type_traitement'=>$type_traitement]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Type_traitement $type_traitement)
+    public function update(Request $request,  $id)
     {
-        $request->validate([
-            'type_traitement' => 'required|string|max:255',
-        ]);
-        $type_traitement->update([
-            'type_traitement' => $request->input('type_traitement'),
+        $type_traitement=Type_traitement::where('id',$id)->first();
+        $this->validate($request,[
 
-        ]);
-        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été modifié avec succès.');
+            'id'=>'required|unique:type_traitements,id,'.$type_traitement->id,
+            'type_traitement'=>'required|string|max:255',
+            
+       ]);
+       $type_traitement->update($request->except('_token','_method'));
+       return redirect()->route('type_traitements.index')->with([
+        'success'=>'Type_traitement modifié'
+       ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Type_traitement $type_traitement)
+    public function destroy( $id)
     {
+        $type_traitement=Type_traitement::where('id',$id)->first();
         $type_traitement->delete();
-        return redirect()->route('type_traitement.index')->with('success', 'Le type_traitement a été supprimé avec succès.');
+        return redirect()->route('type_traitements.index')->with([
+            'success'=>'type_traitement supprimé'
+        ]);
     }
 }

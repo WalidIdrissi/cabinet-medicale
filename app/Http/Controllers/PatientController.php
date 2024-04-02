@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -13,8 +12,11 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = Patient::all();
-        return view('patient.index', compact('patients'));
+      $patients=Patient::all();
+      return view('patients.index')->with([
+        'patients'=>$patients
+
+      ]);
     }
 
     /**
@@ -22,114 +24,93 @@ class PatientController extends Controller
      */
     public function create()
     {
-        return view('patient.create');
+        
+      return view('patients.create');
+      
+
+     
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'nom' => 'required|string|max:255',
-    //         'prenom' => 'required|string|max:255',
-    //         'date_naissance' => 'required|date',
-    //         'telephone' => 'required|string|max:255',
-    //         'poids' => 'required|integer|min:0',
-    //         'taille' => 'required|integer|min:0',
-    //         'groupe_sanguin' => 'required|string|max:255',
-    //         'antecedants_medicaux' => 'required|string|max:255',
-    //     ]);
-    //     Patient::create($request->all());
-    //     return redirect()->route('patient.index')->with('success', 'Le patient a été créé avec succès.');
-    // }
     public function store(Request $request)
     {
        $this->validate($request,[
-            // 'id'=>'required|unique:patients,id',
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'telephone' => 'required|string|max:255',
-            'poids' => 'required|integer|min:0',
-            'taille' => 'required|integer|min:0',
-            'groupe_sanguin' => 'required|string|max:255',
-            'antecedants_medicaux' => 'required|string|max:255',
+
+            'id'=>'required|unique:patients,id',
+            'nom'=>'required|string|max:255',
+            'prenom'=>'required |string|max:255',
+            'date_naissance'=>'required|date',
+            'telephone'=>'required',
+            'poids'=>'required',
+            'taille'=>'required',
+            'groupe_sanguin'=>'required',
+            'antecedants_medicaux'=>'required'
        ]);
        Patient::create($request->except('_token'));
-       return redirect()->route('patients.index')->with(['success'=>'Patient ajouté']);
+       return redirect()->route('patients.index')->with([
+        'success'=>'Patient ajouté'
+       ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Patient $patient)
+    public function show($id)
     {
-        return view('patient.show', compact('patient'));
+      $patient=Patient::where('id',$id)->first();
+      return view('patients.show')->with([
+          'patient'=>$patient
+  
+  ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Patient $patient)
+    public function edit( $id)
     {
-        return view('patient.edit', compact('patient'));
+        $patient=Patient::where('id',$id)->first();
+        return view('patients.edit')->with([
+            'patient'=>$patient
+    
+    ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, Patient $patient)
-    // {
-    //     $request->validate([
-    //         'nom' => 'required|string|max:255',
-    //         'prenom' => 'required|string|max:255',
-    //         'date_naissance' => 'required|date',
-    //         'telephone' => 'required|string|max:255',
-    //         'poids' => 'required|integer|min:0',
-    //         'taille' => 'required|integer|min:0',
-    //         'groupe_sanguin' => 'required|string|max:255',
-    //         'antecedants_medicaux' => 'required|string|max:255',
-    //     ]);
-    //     $patient->update([
-    //         'nom' => $request->input('nom'),
-    //         'prenom' => $request->input('prenom'),
-    //         'date_naissance' => $request->input('date_naissance'),
-    //         'telephone' => $request->input('telephone'),
-    //         'poids' => $request->input('poids'),
-    //         'taille' => $request->input('taille'),
-    //         'groupe_sanguin' => $request->input('groupe_sanguin'),
-    //         'antecedants_medicaux' => $request->input('antecedants_medicaux'),
-    //     ]);
-    //     // return redirect()->route('patient.index')->with('success', 'Le patient a été modifié avec succès.');
-    // }
-
     public function update(Request $request,  $id)
     {
         $patient=Patient::where('id',$id)->first();
         $this->validate($request,[
 
-            // 'id'=>'required|unique:patients,id,'.$patient->id,
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'telephone' => 'required|string|max:255',
-            'poids' => 'required|integer|min:0',
-            'taille' => 'required|integer|min:0',
-            'groupe_sanguin' => 'required|string|max:255',
-            'antecedants_medicaux' => 'required|string|max:255',
+            'id'=>'required|unique:patients,id,'.$patient->id,
+            'nom'=>'required',
+            'prenom'=>'required',
+            'date_naissance'=>'required',
+            'telephone'=>'required',
+            'poids'=>'required',
+            'taille'=>'required',
+            'groupe_sanguin'=>'required',
+            'antecedants_medicaux'=>'required'
        ]);
        $patient->update($request->except('_token','_method'));
-       return redirect()->route('patients.index')->with(['success'=>'Patient modifier']);
+       return redirect()->route('patients.index')->with([
+        'success'=>'Patient modifier '
+       ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Patient $patient)
+    public function destroy( $id)
     {
-        // $patient=Patient::where('id',$id)->first();
+        $patient=Patient::where('id',$id)->first();
         $patient->delete();
-        return redirect()->route('patients.index')->with(['success'=>'patient supprimé']);
+        return redirect()->route('patients.index')->with([
+            'success'=>'patient supprimé'
+        ]);
     }
 }

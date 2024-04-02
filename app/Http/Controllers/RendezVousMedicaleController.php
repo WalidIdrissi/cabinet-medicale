@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Patient;  /*---------------IMPORTANTTT------------*/
 use App\Models\Rendez_vous_medicale;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Patient;
 
 class RendezVousMedicaleController extends Controller
 {
@@ -14,8 +12,11 @@ class RendezVousMedicaleController extends Controller
      */
     public function index()
     {
-        $rendez_vous = Rendez_vous_medicale::all();
-        return view('rendez_vous.index', compact('rendez_vous'));
+        $rendez_vous_medicales=Rendez_vous_medicale::all();
+        return view('rendez_vous_medicales.index')->with([
+          'rendez_vous_medicales'=>$rendez_vous_medicales
+  
+        ]);
     }
 
     /**
@@ -23,8 +24,8 @@ class RendezVousMedicaleController extends Controller
      */
     public function create()
     {
-        $patients = Patient::all();
-        return view('rendez_vous.create', compact('patients'));
+        $patients = Patient::all(); // Récupère tous les patients depuis la base de données
+        return view('rendez_vous_medicales.create', compact('patients'));
     }
 
     /**
@@ -32,62 +33,81 @@ class RendezVousMedicaleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'patient_id' => 'required|string|max:255',
-            'date' => 'required|date',
-            'heure' => 'required|dateTime',
-            'type' => 'required|string|max:255',
-            'statut' => 'required|string|max:255',
-        ]);
-        Rendez_vous_medicale::create($request->all());
-        return redirect()->route('rendez_vous.index')->with('success', 'Le rendez_vous a été créé avec succès.');
+        $this->validate($request,[
+
+            'id'=>'required|unique:Rendez_vous_medicales,id',
+            'patient_id'=>'required',
+            'date'=>'required |date',
+            'heure'=>'required|date_format:H:i',
+            'type'=>'required',
+            'statut'=>'required',
+            
+       ]);
+       Rendez_vous_medicale::create($request->except('_token'));
+       return redirect()->route('rendez_vous_medicales.index')->with([
+        'success'=>'rendez_vous ajouté'
+       ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Rendez_vous_medicale $rendez_vous)
+    public function show( $id)
     {
-        return view('rendez_vous.show', compact('rendez_vous'));
+        $rendez_vous_medicale = Rendez_vous_medicale::findOrFail($id);
+        $patients = Patient::all(); // Récupérer tous les patients pour la liste déroulante
+        return view('rendez_vous_medicales.show')->with([
+            'rendez_vous_medicale' => $rendez_vous_medicale,
+            'patients' => $patients
+    ]);
+    
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rendez_vous_medicale $rendez_vous)
+    public function edit( $id)
     {
-        $patients = Patient::all();
-        return view('rendez_vous.edit', compact('rendez_vous', 'patients'));
+        $rendez_vous_medicale = Rendez_vous_medicale::findOrFail($id);
+        $patients = Patient::all(); // Récupérer tous les patients pour la liste déroulante
+        return view('rendez_vous_medicales.edit')->with([
+            'rendez_vous_medicale' => $rendez_vous_medicale,
+            'patients' => $patients
+        
+    
+    ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rendez_vous_medicale $rendez_vous)
+    public function update(Request $request,  $id)
     {
-        $request->validate([
-            'patient_id' => 'required|string|max:255',
-            'date' => 'required|date',
-            'heure' => 'required|dateTime',
-            'type' => 'required|string|max:255',
-            'statut' => 'required|string|max:255',
-        ]);
-        $rendez_vous->update([
-            'patient_id' => $request->input('patient_id'),
-            'date' => $request->input('date'),
-            'heure' => $request->input('heure'),
-            'type' => $request->input('type'),
-            'statut' => $request->input('statut'),
-        ]);
-        return redirect()->route('rendez_vous.index')->with('success', 'Le rendez_vous a été modifié avec succès.');
+        $rendez_vous_medicale=Rendez_vous_medicale::where('id',$id)->first();
+        $this->validate($request,[
+
+            'id'=>'required|unique:rendez_vous_medicales,id,'.$rendez_vous_medicale->id,
+            'patient_id'=>'required',
+            'date'=>'required |date',
+            'heure'=>'required|date_format:H:i',
+            'type'=>'required',
+            'statut'=>'required',
+       ]);
+       $rendez_vous_medicale->update($request->except('_token','_method'));
+       return redirect()->route('rendez_vous_medicales.index')->with([
+        'success'=>'Rendez_vous modifié '
+       ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rendez_vous_medicale $rendez_vous)
+    public function destroy( $id)
     {
-        $rendez_vous->delete();
-        return redirect()->route('rendez_vous.index')->with('success', 'Le rendez_vous a été supprimé avec succès.');
+        $rendez_vous_medicale=Rendez_vous_medicale::where('id',$id)->first();
+        $rendez_vous_medicale->delete();
+        return redirect()->route('rendez_vous_medicales.index')->with([
+            'success'=>'rendez_vous supprimé'
+        ]);
     }
 }

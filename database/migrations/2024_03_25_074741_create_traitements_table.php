@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('traitements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('Rendez_vous_medicale_id');
-            $table->foreign('Rendez_vous_medicale_id')->references('id')->on('Rendez_vous_medicales');
+            $table->foreignId('patient_id')->constrained();
             $table->date('date');
-            $table->unsignedBigInteger('type_traitement_id');
-            $table->foreign('type_traitement_id')->references('id')->on('type_traitements');
+            $table->foreignId('type_traitement_id')->constrained();
             $table->string('statut_paiement');
             $table->timestamps();
         });
