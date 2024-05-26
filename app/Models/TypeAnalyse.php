@@ -4,17 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class Analyse extends Model
+
+class TypeAnalyse extends Model
 {
     protected $fillable = [
-        'date',
-        'traitement_id',
+        'type_analyse',
     ];
-
-    public function traitement()
-    {
-        return $this->belongsTo(Traitement::class);
-    }
 
     public function detailAnalyses()
     {
