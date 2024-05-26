@@ -2,83 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Analyse;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Traitement;
+use App\Models\Analyse;
+use App\Models\Ordonnance;
 
 class AnalyseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $analyses = Analyse::all();
-        return view('analyse.index', compact('analyses'));
+        return view('analyses.index', compact('analyses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $traitements = Traitement::all();
-        return view('analyse.create', compact('traitements'));
+        $ordonnances = Ordonnance::all();
+        return view('analyses.create', compact('ordonnances'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'date' => 'required|date',
-            'traitement_id' => 'required|string|max:255',
+            'ordonnance_id' => 'required|exists:ordonnances,id',
         ]);
+
         Analyse::create($request->all());
-        return redirect()->route('analyse.index')->with('success', 'Le analyse a été créé avec succès.');
+
+        return redirect()->route('analyses.index')
+            ->with('success', 'Analyse created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Analyse $analyse)
     {
-        return view('analyse.show', compact('analyse'));
+        return view('analyses.show', compact('analyse'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Analyse $analyse)
     {
-        $traitements = Traitement::all();
-        return view('analyse.edit', compact('analyse', 'traitements'));
+        $ordonnances = Ordonnance::all();
+        return view('analyses.edit', compact('analyse', 'ordonnances'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Analyse $analyse)
     {
         $request->validate([
             'date' => 'required|date',
-            'traitement_id' => 'required|string|max:255',
+            'ordonnance_id' => 'required|exists:ordonnances,id',
         ]);
-        $analyse->update([
-            'date' => $request->input('date'),
-            'traitement_id' => $request->input('traitement_id'),
-        ]);
-        return redirect()->route('analyse.index')->with('success', 'Le analyse a été modifié avec succès.');
+
+        $analyse->update($request->all());
+
+        return redirect()->route('analyses.index')
+            ->with('success', 'Analyse updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Analyse $analyse)
     {
         $analyse->delete();
-        return redirect()->route('analyse.index')->with('success', 'Le analyse a été supprimé avec succès.');
+
+        return redirect()->route('analyses.index')
+            ->with('success', 'Analyse deleted successfully');
     }
 }
